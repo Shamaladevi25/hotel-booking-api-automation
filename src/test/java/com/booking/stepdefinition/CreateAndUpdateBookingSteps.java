@@ -9,6 +9,7 @@ import io.cucumber.java.en.When;
 import io.restassured.http.Cookie;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -18,16 +19,13 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RequiredArgsConstructor
 public class CreateAndUpdateBookingSteps {
 
     private Response response;
     private JSONObject requestBody;
     private final HotelBookingContext context;
     private static final Logger LOG = LogManager.getLogger(CreateAndUpdateBookingSteps.class);
-
-    public CreateAndUpdateBookingSteps(HotelBookingContext context) {
-        this.context = context;
-    }
 
     @Given("user has access to endpoint {string}")
     public void userHasAccessToEndpoint(final String endpoint) {
@@ -44,16 +42,16 @@ public class CreateAndUpdateBookingSteps {
             requestBody = createBookingRequestBody(row, roomId);
             response = context.requestSetup().body(requestBody.toString()).when().post(context.session.get("endpoint").toString());
 
-            LOG.info("Booking has been created successfully" + response.toString());
-            validateBookingResponse(row.get("firstname"), row.get("lastname"), row.get("checkin"), row.get("checkout"));
             if (response.getStatusCode() == 201) {
+                LOG.info("Booking has been created successfully" + response.toString());
+                validateBookingResponse(response, row.get("firstname"), row.get("lastname"), row.get("checkin"), row.get("checkout"));
                 final int bookingId = response.jsonPath().getInt("booking.bookingid");
                 HotelBookingContext.addBookingId(bookingId);
             }
         }
     }
 
-    private void validateBookingResponse(String firstname, String lastname, String checkin, String checkout) {
+    private void validateBookingResponse(Response response, String firstname, String lastname, String checkin, String checkout) {
         String responseFirstname = response.jsonPath().getString("booking.firstname");
         String responseLastname = response.jsonPath().getString("booking.lastname");
         String responseCheckIn = response.jsonPath().getString("booking.bookingdates.checkin");
@@ -93,7 +91,7 @@ public class CreateAndUpdateBookingSteps {
 
     @When("the user updates the booking with following booking details")
     public void theUserUpdatesTheBookingWithFollowingDetails(final DataTable dataTable) {
-        Cookie token =(Cookie) context.session.get("token");
+        Cookie token = (Cookie) context.session.get("token");
 
         for (Map<String, String> data : dataTable.asMaps(String.class, String.class)) {
             final String bookingId = HotelBookingContext.getBookingIds().getLast().toString();
@@ -101,8 +99,8 @@ public class CreateAndUpdateBookingSteps {
             response = context.requestSetup().cookie(token).body(requestBody.toString())
                     .when().put(context.session.get("endpoint").toString() + bookingId);
 
-            final String updatedLastname = response.jsonPath().getString("booking.lastname");
             if (response.statusCode() == 200) {
+                final String updatedLastname = response.jsonPath().getString("booking.lastname");
                 assertThat(data.get("lastname")).isEqualTo(updatedLastname);
             }
         }

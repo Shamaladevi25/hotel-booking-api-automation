@@ -5,18 +5,16 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.module.jsv.JsonSchemaValidator;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.empty;
 
+@RequiredArgsConstructor
 public class RetrieveBookingSteps {
 
     private final HotelBookingContext context;
-
-    public RetrieveBookingSteps(HotelBookingContext context) {
-        this.context = context;
-    }
 
     @When("the user retrieves booking with booking ID")
     public void theUserRetrievesBookingWithBookingID() {

@@ -111,6 +111,13 @@
             <artifactId>curl-logger</artifactId>
             <version>2.0.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -122,6 +129,13 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <release>${java.version}</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>

@@ -4,17 +4,15 @@ import com.booking.util.HotelBookingContext;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RequiredArgsConstructor
 public class BookingSummarySteps {
 
     private Response response;
     private final HotelBookingContext context;
-
-    public BookingSummarySteps(HotelBookingContext context) {
-        this.context = context;
-    }
 
     @When("the user retrieves booking summary {string} with roomid")
     public void theUserRetrievesBookingSummaryWithRoomId(final String endpoint) {

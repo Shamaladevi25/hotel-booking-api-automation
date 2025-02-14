@@ -8,6 +8,7 @@ import io.restassured.http.Cookie;
 import io.restassured.http.Cookies;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,9 @@ public class HotelBookingContext {
     private static final String CONTENT_TYPE = PropertyFile.getProperty("content.type");
     public Response response;
     public Map<String, Object> session = new HashMap<>();
+    @Getter
     private static final List<Integer> roomIds = new ArrayList<>();
+    @Getter
     private static final List<Integer> bookingIds = new ArrayList<>();
 
     public RequestSpecification requestSetup() {
@@ -34,10 +37,6 @@ public class HotelBookingContext {
                 .accept(CONTENT_TYPE);
     }
 
-    public static List<Integer> getRoomIds() {
-        return roomIds;
-    }
-
     public static void addRoomId(final int roomId) {
         roomIds.add(roomId);
     }
@@ -45,10 +44,6 @@ public class HotelBookingContext {
     public Cookie retriveAuthenticatedCookie() {
         Cookies cookies = response.detailedCookies();
         return cookies.get("token");
-    }
-
-    public static List<Integer> getBookingIds() {
-        return bookingIds;
     }
 
     public static void addBookingId(final int bookingId) {
