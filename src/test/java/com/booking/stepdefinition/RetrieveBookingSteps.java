@@ -59,4 +59,18 @@ public class RetrieveBookingSteps {
     public void theResponseBodyShouldContainEmptyBookings() {
         context.response.then().assertThat().body("bookings", empty());
     }
+
+    @When("the user retrieves booking with room ID")
+    public void theUserRetrievesBookingWithRoomID() {
+        final Integer roomId = HotelBookingContext.getRoomIds().getLast();
+        context.response = context.requestSetup().cookie(context.retriveAuthenticatedCookie()).when()
+                .get(context.session.get("endpoint").toString() + "?roomid=" + roomId);
+    }
+
+    @When("the user retrieves booking with invalid room ID {int}")
+    public void theUserRetrievesBookingWithInvalidRoomID(final Integer roomid) {
+        context.response = context.requestSetup().cookie(context.retriveAuthenticatedCookie()).when()
+                .get(context.session.get("endpoint").toString() + "?roomid=" + roomid);
+
+    }
 }

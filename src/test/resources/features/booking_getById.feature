@@ -22,3 +22,17 @@ Feature: Booking Retrieval API Tests
     Given user has access to endpoint "/booking/"
     When the user retrieves booking with invalid booking ID 0
     Then user should get the response code 404
+
+  @getBookingByRoomID
+  Scenario: Retrieve bookings with valid Room IDs
+    Given user has access to endpoint "/booking/"
+    When the user retrieves booking with room ID
+    Then user should get the response code 200
+    And the response body should contain the response with JSON schema "retrieveBookingByRoomIDSchema.json"
+
+  @getBookingByInvalidRoomID
+  Scenario: Retrieve bookings with invalid room IDs
+    Given user has access to endpoint "/booking/"
+    When the user retrieves booking with invalid room ID 0
+    Then user should get the response code 200
+    And the response body should contain an empty bookings array
