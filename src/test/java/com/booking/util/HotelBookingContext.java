@@ -4,6 +4,9 @@ import com.github.dzieciou.testing.curl.CurlRestAssuredConfigFactory;
 import com.github.dzieciou.testing.curl.Options;
 import io.restassured.RestAssured;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.http.Cookie;
+import io.restassured.http.Cookies;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.ArrayList;
@@ -14,8 +17,10 @@ import java.util.Map;
 public class HotelBookingContext {
 
     private static final String CONTENT_TYPE = PropertyFile.getProperty("content.type");
+    public Response response;
     public Map<String, Object> session = new HashMap<>();
     private static final List<Integer> roomIds = new ArrayList<>();
+    private static final List<Integer> bookingIds = new ArrayList<>();
 
     public RequestSpecification requestSetup() {
         RestAssured.reset();
@@ -34,6 +39,19 @@ public class HotelBookingContext {
     }
 
     public static void addRoomId(final int roomId) {
-        roomIds.add(Integer.valueOf(roomId));
+        roomIds.add(roomId);
+    }
+
+    public Cookie retriveAuthenticatedCookie() {
+        Cookies cookies = response.detailedCookies();
+        return cookies.get("token");
+    }
+
+    public static List<Integer> getBookingIds() {
+        return bookingIds;
+    }
+
+    public static void addBookingId(final int bookingId) {
+        bookingIds.add(bookingId);
     }
 }

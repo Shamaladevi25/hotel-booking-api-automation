@@ -1,13 +1,11 @@
 package com.booking.stepdefinition;
 
 import com.booking.util.HotelBookingContext;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.empty;
 
 public class BookingSummarySteps {
 
@@ -41,16 +39,6 @@ public class BookingSummarySteps {
     @When("the user retrieves booking summary {string} with invalid roomid {int}")
     public void theUserRetrievesBookingSummaryWithInvalidRoomId(final String endpoint, final int roomid) {
         context.session.put("endpoint", endpoint);
-        response = context.requestSetup().when().get(context.session.get("endpoint").toString() + "?roomid=" + roomid);
-    }
-
-    @And("the response body should contain an empty bookings array")
-    public void theResponseBodyShouldContainEmptyBookings() {
-        response.then().assertThat().body("bookings", empty());
-    }
-
-    @Then("user should get the response code {int}")
-    public void userShouldGetTheResponseCode(final Integer statusCode) {
-        assertThat(Long.valueOf(statusCode)).isEqualTo(Long.valueOf(response.getStatusCode()));
+        context.response = context.requestSetup().when().get(context.session.get("endpoint").toString() + "?roomid=" + roomid);
     }
 }

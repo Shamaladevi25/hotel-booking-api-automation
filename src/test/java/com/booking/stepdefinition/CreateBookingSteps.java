@@ -45,6 +45,10 @@ public class CreateBookingSteps {
 
             LOG.info("Booking has been created successfully" + response.toString());
             validateBookingResponse(row.get("firstname"), row.get("lastname"), row.get("checkin"), row.get("checkout"));
+            if (response.getStatusCode() == 201) {
+                final int bookingId = response.jsonPath().getInt("booking.bookingid");
+                HotelBookingContext.addBookingId(bookingId);
+            }
         }
     }
 
