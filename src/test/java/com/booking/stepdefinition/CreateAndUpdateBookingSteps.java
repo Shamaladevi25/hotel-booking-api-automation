@@ -6,6 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.http.Cookie;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import org.apache.log4j.LogManager;
@@ -17,14 +18,14 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CreateBookingSteps {
+public class CreateAndUpdateBookingSteps {
 
     private Response response;
     private JSONObject requestBody;
     private final HotelBookingContext context;
-    private static final Logger LOG = LogManager.getLogger(CreateBookingSteps.class);
+    private static final Logger LOG = LogManager.getLogger(CreateAndUpdateBookingSteps.class);
 
-    public CreateBookingSteps(HotelBookingContext context) {
+    public CreateAndUpdateBookingSteps(HotelBookingContext context) {
         this.context = context;
     }
 
@@ -88,6 +89,23 @@ public class CreateBookingSteps {
     public void theUserShouldSeeTheResponseWithIncorrectField(final String errorMessage) {
         final String actualErrorMessage = response.jsonPath().getString("fieldErrors");
         assertThat(errorMessage).isEqualTo(actualErrorMessage);
+    }
+
+    @When("the user updates the booking with following booking details")
+    public void theUserUpdatesTheBookingWithFollowingDetails(final DataTable dataTable) {
+        Cookie token =(Cookie) context.session.get("token");
+
+        for (Map<String, String> data : dataTable.asMaps(String.class, String.class)) {
+            final String bookingId = HotelBookingContext.getBookingIds().getLast().toString();
+            requestBody = createBookingRequestBody(data, Integer.parseInt(generateRandomRoomId()));
+            response = context.requestSetup().cookie(token).body(requestBody.toString())
+                    .when().put(context.session.get("endpoint").toString() + bookingId);
+
+            final String updatedLastname = response.jsonPath().getString("booking.lastname");
+            if (response.statusCode() == 200) {
+                assertThat(data.get("lastname")).isEqualTo(updatedLastname);
+            }
+        }
     }
 
     private JSONObject createBookingRequestBody(Map<String, String> row, int roomid) {

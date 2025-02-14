@@ -8,7 +8,7 @@ Feature: Booking Creation API Tests
       | firstname   | lastname   | email   | phone   | checkin   | checkout   |
       | <firstname> | <lastname> | <email> | <phone> | <checkin> | <checkout> |
     Then the response status code should be 201
-    And validate the response with JSON schema "createBookingSchema.json"
+    And validate the response with JSON schema "createAndUpdateBookingSchema.json"
 
     Examples:
       | firstname | lastname | email                    | phone        | checkin    | checkout   |
