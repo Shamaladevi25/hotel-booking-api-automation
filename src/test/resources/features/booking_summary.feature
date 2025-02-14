@@ -1,7 +1,7 @@
-@bookingAPI @bookingSummary
+@bookingAPI @bookingSummary @noAuth
 Feature: Booking Summary API Tests
 
-  @getBookingSummaryByValidID
+  @getBookingSummaryByValidID @noAuth
   Scenario Outline: Verify booking summary for different room ids
     Given user has access to endpoint "/booking/"
     When the user books a room with the following booking details
@@ -15,7 +15,7 @@ Feature: Booking Summary API Tests
       | firstname | lastname | email                | phone        | checkin    | checkout   |
       | Jacob     | Wary     | jacob.wary@gmail.com | 868787687676 | 2025-03-30 | 2025-03-31 |
 
-  @getBookingSummaryByInvalidID
+  @getBookingSummaryByInvalidID @noAuth
   Scenario: Verify booking summary for invalid room id
     Given user has access to endpoint "/booking/"
     When the user retrieves booking summary "/booking/summary" with invalid roomid 0

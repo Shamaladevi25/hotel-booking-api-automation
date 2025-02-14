@@ -1,11 +1,6 @@
 @bookingAPI @getBookingByID
 Feature: Booking Retrieval API Tests
 
-  Background: create an auth token
-    Given user has access to endpoint "/auth/login"
-    When user creates a auth token with credential "admin" & "password"
-    Then user should get the response code 200
-
   @getBookingByBookingID
   Scenario: Retrieve bookings with valid Booking IDs
     Given user has access to endpoint "/booking/"

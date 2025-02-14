@@ -1,11 +1,6 @@
 @bookingAPI @updateBooking
 Feature: Booking Update API Tests
 
-  Background: create an auth token
-    Given user has access to endpoint "/auth/login"
-    When user creates a auth token with credential "admin" & "password"
-    Then user should get the response code 200
-
   @bookingUpdateSuccess
   Scenario: Successfully update an existing booking with valid data
     Given user has access to endpoint "/booking/"

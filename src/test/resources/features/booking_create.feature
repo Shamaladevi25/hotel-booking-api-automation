@@ -1,7 +1,7 @@
-@bookingAPI @createBooking
+@bookingAPI @createBooking @noAuth
 Feature: Booking Creation API Tests
 
-  @bookingCreation
+  @bookingCreation @noAuth
   Scenario Outline: Create a booking with valid data successfully
     Given user has access to endpoint "/booking/"
     When the user books a room with the following booking details
@@ -16,7 +16,7 @@ Feature: Booking Creation API Tests
       | Jane      | Smith    | jane.smith@gmail.com     | 988877665544 | 2025-03-15 | 2025-03-18 |
       | George    | William  | george.william@gmail.com | 79879898232  | 2025-03-18 | 2025-03-21 |
 
-  @bookingCreationError
+  @bookingCreationError @noAuth
   Scenario Outline: Create booking without passing required fields should fail
     Given user has access to endpoint "/booking/"
     When the user tries to book a room with invalid booking details

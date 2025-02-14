@@ -37,16 +37,6 @@ public class RetrieveBookingSteps {
         assertThat(Long.valueOf(statusCode)).isEqualTo(Long.valueOf(context.response.getStatusCode()));
     }
 
-    @When("user creates a auth token with credential {string} & {string}")
-    public void createAuthTokenWithCredentials(final String username, final String password) {
-        JSONObject credentials = new JSONObject();
-        credentials.put("username", username);
-        credentials.put("password", password);
-        context.response = context.requestSetup().body(credentials.toString()).when()
-                .post(context.session.get("endpoint").toString());
-        context.session.put("token", context.retriveAuthenticatedCookie());
-    }
-
     @When("the user retrieves booking with invalid booking ID {int}")
     public void theUserRetrievesBookingWithInvalidBookingID(final Integer bookingid) {
         context.response = context.requestSetup().cookie(context.retriveAuthenticatedCookie()).when()
