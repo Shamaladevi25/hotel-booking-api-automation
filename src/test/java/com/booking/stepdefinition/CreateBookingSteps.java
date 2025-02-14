@@ -2,6 +2,7 @@ package com.booking.stepdefinition;
 
 import com.booking.util.HotelBookingContext;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -38,7 +39,6 @@ public class CreateBookingSteps {
         for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
             final int roomId = Integer.parseInt(generateRandomRoomId());
 
-
             requestBody = createBookingRequestBody(row, roomId);
             response = context.requestSetup().body(requestBody.toString()).when().post(context.session.get("endpoint").toString());
 
@@ -67,6 +67,22 @@ public class CreateBookingSteps {
     @Then("validate the response with JSON schema {string}")
     public void userValidatesResponseWithJSONSchema(final String schemaFileName) {
         response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/" + schemaFileName));
+    }
+
+    @When("the user tries to book a room with invalid booking details")
+    public void theUserSendsPOSTRequestWithTheInvalidBookingDetails(final DataTable dataTable) {
+        for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
+            final int roomId = Integer.parseInt(generateRandomRoomId());
+            requestBody = createBookingRequestBody(row, roomId);
+            response = context.requestSetup().body(requestBody.toString()).when().post(context.session.get("endpoint").toString());
+            LOG.info("Booking has failed: " + response.toString());
+        }
+    }
+
+    @And("the user should see response with incorrect {string}")
+    public void theUserShouldSeeTheResponseWithIncorrectField(final String errorMessage) {
+        final String actualErrorMessage = response.jsonPath().getString("fieldErrors");
+        assertThat(errorMessage).isEqualTo(actualErrorMessage);
     }
 
     private JSONObject createBookingRequestBody(Map<String, String> row, int roomid) {
