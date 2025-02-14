@@ -38,6 +38,7 @@ public class CreateBookingSteps {
 
         for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
             final int roomId = Integer.parseInt(generateRandomRoomId());
+            HotelBookingContext.addRoomId(roomId);
 
             requestBody = createBookingRequestBody(row, roomId);
             response = context.requestSetup().body(requestBody.toString()).when().post(context.session.get("endpoint").toString());
