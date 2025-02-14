@@ -122,6 +122,6 @@ public class CreateAndUpdateBookingSteps {
 
     private static String generateRandomRoomId() {
         final Random random = new Random();
-        return String.valueOf(2000 + random.nextInt(900)); // Generates a number between 2000 and 2999
+        return String.valueOf(3000 + random.nextInt(900)); // Generates a number between 3000 and 3999
     }
 }

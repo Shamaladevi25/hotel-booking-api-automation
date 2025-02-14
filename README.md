@@ -17,7 +17,7 @@ This project contains automated tests for the HotelBooking API using Cucumber an
 
 ## To run the test using tags:
 
-Go to TestRunner.class(src/test/java/com/example/runner/TestRunner.java)
+Go to TestRunner.class(src/test/java/com/booking/runner/TestRunner.java)
 
 Update the "tags = @bookingAPI" and run using the command `mvn clean test`
 
@@ -28,7 +28,8 @@ Different tags we can use:
 3. @bookingSummary
 4. @updateBooking
 5. @deleteBooking
-6. @noAuth - Use this tag for scenarios where token generation is not required.
+6. @bookingE2ETest
+7. @noAuth - Use this tag for scenarios where token generation is not required.
 
 ### Swagger Definition: https://automationintesting.online/booking/swagger-ui/index.html#
 
@@ -58,6 +59,6 @@ BDD requires a feature file to invoke the step definitions:
      authentication step.
 
 **2. To avoid a 409 conflict error:** (such as when trying to create bookings with duplicate room IDs), the helper
-function (generateRandomRoomId) is used to generate a random room ID between 2000 and 2999:
+function (generateRandomRoomId) is used to generate a random room ID between 3000 and 3999:
 This ensures each test scenario uses a unique room ID, preventing the issue of attempting to book the same room multiple
 times and receiving a 409 error from the API.
